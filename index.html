@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link
+            rel="icon"
+            type="image/svg+xml"
+            href="https://vitejs.dev/logo.svg"
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>SwiftCart</title>
+        <link rel="stylesheet" href="/src/style.css" />
+    </head>
+
+    <body class="flex h-screen">
+        <div
+            class="container mx-auto p-4"
+            x-data="productList"
+            x-init="loadProducts"
+        >
+            <header class="flex justify-between items-center mb-4">
+                <h1 class="text-2xl font-bold">SwiftCart</h1>
+                <div class="flex items-center">
+                    <input
+                        type="text"
+                        placeholder="Search products..."
+                        class="p-2 border rounded mr-4"
+                        x-model="search"
+                    />
+                    <svg
+                        class="w-6 h-6 text-gray-700"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2 9h12l2-9H7zm5-6h.01M7 13h10m0 0H7"
+                        ></path>
+                    </svg>
+                </div>
+            </header>
+
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <button
+                        @click="filterCategory('all')"
+                        class="bg-gray-200 p-2 rounded mr-2"
+                    >
+                        All
+                    </button>
+                    <button
+                        @click="filterCategory('electronics')"
+                        class="bg-gray-200 p-2 rounded mr-2"
+                    >
+                        Electronics
+                    </button>
+                    <button
+                        @click="filterCategory('jewelery')"
+                        class="bg-gray-200 p-2 rounded mr-2"
+                    >
+                        Jewelery
+                    </button>
+                    <!-- Add more categories as needed -->
+                </div>
+                <div>
+                    <select
+                        x-model="sortOrder"
+                        @change="sortProducts"
+                        class="p-2 border rounded"
+                    >
+                        <option value="default">Default</option>
+                        <option value="asc">Price: Low to High</option>
+                        <option value="desc">Price: High to Low</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <template x-for="product in filteredProducts" :key="product.id">
+                    <div @click="showModal(product)" class="border p-4 rounded">
+                        <img
+                            :src="product.image"
+                            alt=""
+                            class="w-full h-48 object-contain mb-2 cursor-pointer"
+                        />
+                        <h2
+                            class="text-lg font-bold"
+                            x-text="product.title"
+                        ></h2>
+                        <p class="text-gray-500" x-text="product.price"></p>
+                        <button class="bg-blue-500 text-white p-2 rounded mt-2">
+                            Add To Cart
+                        </button>
+                    </div>
+                </template>
+            </div>
+            <!-- Modal -->
+        <div
+            x-show="isModalOpen"
+            x-transition
+            class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+        >
+            <div
+                @click.away="isModalOpen = false"
+                class="bg-white p-4 rounded shadow-lg relative"
+            >
+                <button
+                    class="absolute top-0 right-0 mt-2 mr-2 text-gray-600"
+                    @click="closeModal"
+                >
+                    ✖
+                </button>
+                <img
+                    :src="modalProduct.image"
+                    :alt="modalProduct.image"
+                    x-text="modalProduct.image"
+                    class="w-full h-auto mb-2"
+                />
+                <h2 class="text-lg font-bold" x-text="modalProduct.title"></h2>
+                <p class="text-gray-500" x-text="modalProduct.price"></p>
+            </div>
+        </div>
+        </div>
+
+        
+
+        <script type="module" src="/src/main.js"></script>
+    </body>
+</html>
