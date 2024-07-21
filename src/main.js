@@ -45,8 +45,12 @@ document.addEventListener("alpine:init", () => {
         },
         closeModal() {
             this.isModalOpen = false;
-            this.modalProduct = {};
+            // this.modalProduct = {};
         },
+
+        async init(){
+            await this.loadProducts()
+        }
     }));
 });
 
