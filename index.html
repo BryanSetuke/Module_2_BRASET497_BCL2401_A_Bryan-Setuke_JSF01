@@ -1,245 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <link
-            rel="icon"
-            type="image/svg+xml"
-            href="https://vitejs.dev/logo.svg"
-        />
-        <link
-            rel="stylesheet"
-            href="https://unpkg.com/tailwindcss@1.2.0/dist/tailwind.min.css"
-        />
-        <script
-            src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v1.9.8/dist/alpine.js"
-            defer
-        ></script>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>SwiftCart</title>
-        <link rel="stylesheet" href="/src/style.css" />
-        <style>
-            .star {
-                cursor: pointer;
-                fill: none;
-                stroke: currentColor;
-            }
-
-            .star.filled {
-                fill: yellow;
-            }
-
-            .heart {
-                cursor: pointer;
-                fill: none;
-                stroke: currentColor;
-            }
-
-            .heart.filled {
-                fill: red;
-            }
-
-            .product-card:hover {
-                transform: scale(1.05);
-                transition: transform 0.3s;
-            }
-        </style>
-    </head>
-
-    <body class="flex flex-col min-h-screen" x-data="productList">
-        <!-- Navigation Bar -->
-        <nav class="bg-gray-200 p-4 flex justify-between items-center">
-            <div class="flex items-center" x-data="products">
-                <img
-                    src="./src/logo-icon.jpg"
-                    alt="SwiftCart Logo"
-                    class="w-10 h-10 mr-2"
-                />
-                <h1 class="text-2xl font-bold">SwiftCart</h1>
-            </div>
-            <div class="flex items-center space-x-4">
-                <div class="relative">
-                    <button class="flex items-center">
-                        <svg
-                            class="w-6 h-6 text-gray-700"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2 9h12l2-9H7zm5-6h.01M7 13h10m0 0H7"
-                            ></path>
-                        </svg>
-                        <span class="ml-2">Wishlist</span>
-                        <span
-                            class="absolute top-0 right-0 bg-red-500 text-white rounded-full px-2 text-sm"
-                            >2</span
-                        >
-                    </button>
-                </div>
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="https://vitejs.dev/logo.svg" />
+    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@1.2.0/dist/tailwind.min.css" />
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v1.9.8/dist/alpine.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SwiftCart</title>
+    <link rel="stylesheet" href="/src/style.css" />
+    <style>
+        .star {
+            cursor: pointer;
+            fill: none;
+            stroke: currentColor;
+        }
+        .star.filled {
+            fill: yellow;
+        }
+        .heart {
+            cursor: pointer;
+            fill: none;
+            stroke: currentColor;
+        }
+        .heart.filled {
+            fill: red;
+        }
+        .product-card:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen" x-data="productList">
+    <!-- Navigation Bar -->
+    <nav class="bg-gray-200 p-4 flex justify-between items-center">
+        <div class="flex items-center" x-data="products">
+            <img src="./src/logo-icon.jpg" alt="SwiftCart Logo" class="w-10 h-10 mr-2" />
+            <h1 class="text-2xl font-bold">SwiftCart</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="relative">
                 <button class="flex items-center">
-                    <!-- <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2 9h12l2-9H7zm5-6h.01M7 13h10m0 0H7"></path>
-        </svg> -->
-                    <span class="ml-2">Login</span>
+                    <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2 9h12l2-9H7zm5-6h.01M7 13h10m0 0H7"></path>
+                    </svg>
+                    <span class="ml-2">Wishlist</span>
+                    <span class="absolute top-0 right-0 bg-red-500 text-white rounded-full px-2 text-sm">2</span>
                 </button>
             </div>
-        </nav>
+            <button class="flex items-center">
+                <span class="ml-2">Login</span>
+            </button>
+        </div>
+    </nav>
 
-        <!-- Main Content -->
-        <div
-            class="container mx-auto p-4 bg-gray-100 flex-grow"
-            x-init="loadProducts"
-        >
-            <header
-                class="flex flex-col md:flex-row justify-between items-center mb-4"
-            >
-                <div class="flex items-center mb-4 md:mb-0">
-                    <select
-                        x-model="category"
-                        @change="filterCategory($event.target.value)"
-                        class="p-2 border rounded mr-4"
-                    >
-                        <option value="all">All categories</option>
-                        <option value="electronics">Electronics</option>
-                        <option value="jewelery">Jewelery</option>
-                        <option value="men's clothing">Men's clothing</option>
-                        <option value="women's clothing">
-                            Women's clothing
-                        </option>
-                    </select>
-                    <input
-                        type="text"
-                        placeholder="Search products..."
-                        class="p-2 border rounded"
-                        x-model="search"
-                    />
-                    <button class="ml-2">
-                        <!-- <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2 9h12l2-9H7zm5-6h.01M7 13h10m0 0H7"></path>
-          </svg> -->
-                    </button>
-                </div>
-                <div>
-                    <select
-                        x-model="sortOrder"
-                        @change="sortProducts"
-                        class="p-2 border rounded"
-                    >
-                        <option value="default">Default</option>
-                        <option value="asc">Price: Low to High</option>
-                        <option value="desc">Price: High to Low</option>
-                    </select>
-                </div>
-            </header>
+    <!-- Main Content -->
+    <div class="container mx-auto p-4 bg-gray-100 flex-grow" x-init="loadProducts">
+        <header class="flex flex-col md:flex-row justify-between items-center mb-4">
+            <div class="flex items-center mb-4 md:mb-0">
+                <select x-model="category" @change="filterCategory($event.target.value)" class="p-2 border rounded mr-4">
+                    <option value="all">All categories</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="jewelery">Jewelery</option>
+                    <option value="men's clothing">Men's clothing</option>
+                    <option value="women's clothing">Women's clothing</option>
+                </select>
+                <input type="text" placeholder="Search products..." class="p-2 border rounded" x-model="search" />
+                <button class="ml-2"></button>
+            </div>
+            <div class="flex items-center">
+                <span class="mr-2">Sort by:</span>
+                <select x-model="sortOrder" @change="sortProducts" class="p-2 border rounded">
+                    <option value="default">Default</option>
+                    <option value="asc">Price: Low to High</option>
+                    <option value="desc">Price: High to Low</option>
+                </select>
+            </div>
+        </header>
 
-            <div
-                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-            >
-                <template x-for="product in filteredProducts" :key="product.id">
-                    <div
-                        class="border p-4 rounded product-card bg-white shadow"
-                    >
-                        <img
-                            :src="product.image"
-                            alt=""
-                            class="w-full h-48 object-contain mb-2 cursor-pointer rounded"
-                            @click="showModal(product)"
-                        />
-                        <h2
-                            class="text-lg font-bold"
-                            x-text="product.title"
-                        ></h2>
-                        <div class="flex items-center my-2">
-                            <template x-for="star in 5" :key="star">
-                                <svg
-                                    :class="{'filled': star <= product.rating.rate}"
-                                    class="w-6 h-6 star"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    @click="rateProduct(product, star)"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
-                                    ></path>
-                                </svg>
-                            </template>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <p
-                                class="text-gray-500"
-                                x-text="'R' + product.price"
-                            ></p>
-                            <button @click="toggleFavorite(product)">
-                                <svg
-                                    :class="{'filled': product.favorite}"
-                                    class="w-6 h-6 heart"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M12 21C12 21 7.328 17.026 4.671 13.55 2.014 10.073 3.23 5.084 7.354 3.614 8.502 3.2 9.674 3 10.85 3c1.175 0 2.348.2 3.496.614C18.769 5.084 19.985 10.073 17.329 13.55 14.672 17.026 12 21 12 21z"
-                                    ></path>
-                                </svg>
-                            </button>
-                        </div>
-                        <button
-                            class="bg-gray-500 text-white p-2 rounded mt-2 w-full"
-                        >
-                            Add To Cart
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <template x-for="product in filteredProducts" :key="product.id">
+                <div class="border p-4 rounded product-card bg-white shadow">
+                    <img :src="product.image" alt="" class="w-full h-48 object-contain mb-2 cursor-pointer rounded" @click="showModal(product)" />
+                    <h2 class="text-lg font-bold" x-text="product.title"></h2>
+                    <div class="flex items-center my-2">
+                        <template x-for="star in 5" :key="star">
+                            <svg :class="{'filled': star <= product.rating.rate}" class="w-6 h-6 star" viewBox="0 0 24 24" fill="none" stroke="currentColor" @click="rateProduct(product, star)">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
+                            </svg>
+                        </template>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <p class="text-gray-500" x-text="'R' + product.price"></p>
+                        <button @click="toggleFavorite(product)">
+                            <svg :class="{'filled': product.favorite}" class="w-6 h-6 heart" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21C12 21 7.328 17.026 4.671 13.55 2.014 10.073 3.23 5.084 7.354 3.614 8.502 3.2 9.674 3 10.85 3c1.175 0 2.348.2 3.496.614C18.769 5.084 19.985 10.073 17.329 13.55 14.672 17.026 12 21 12 21z"></path>
+                            </svg>
                         </button>
                     </div>
-                </template>
-            </div>
-        </div>
-
-        <!-- Modal -->
-        <div x-show="isModalOpen">
-            <div
-                x-show="modalProduct"
-                @click.away="closeModal"
-                class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-            >
-                <div class="bg-white p-4 rounded shadow-lg relative">
-                    <button
-                        class="absolute top-0 right-0 mt-2 mr-2 text-gray-600"
-                        @click="closeModal"
-                    >
-                        ✖
-                    </button>
-                    <img
-                        :src="modalProduct.image"
-                        alt=""
-                        class="w-full h-64 object-contain"
-                    />
-                    <h2
-                        class="text-lg font-bold"
-                        x-text="modalProduct.title"
-                    ></h2>
-                    <p
-                        class="text-gray-500"
-                        x-text="'R' + modalProduct.price"
-                    ></p>
+                    <button class="bg-gray-500 text-white p-2 rounded mt-2 w-full">Add To Cart</button>
                 </div>
+            </template>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div x-show="isModalOpen">
+        <div x-show="modalProduct" @click.away="closeModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div class="bg-white p-4 rounded shadow-lg relative">
+                <button class="absolute top-0 right-0 mt-2 mr-2 text-gray-600" @click="closeModal">✖</button>
+                <img :src="modalProduct.image" alt="" class="w-full h-64 object-contain" />
+                <h2 class="text-lg font-bold" x-text="modalProduct.title"></h2>
+                <p class="text-gray-500" x-text="'R' + modalProduct.price"></p>
+                <p class="mt-2" x-text="modalProduct.description"></p>
+                <div class="flex items-center my-2">
+                    <template x-for="star in 5" :key="star">
+                        <svg :class="{'filled': star <= modalProduct.rating.rate}" class="w-6 h-6 star" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
+                        </svg>
+                    </template>
+                </div>
+                <button @click="toggleFavorite(modalProduct)">
+                    <svg :class="{'filled': modalProduct.favorite}" class="w-6 h-6 heart" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21C12 21 7.328 17.026 4.671 13.55 2.014 10.073 3.23 5.084 7.354 3.614 8.502 3.2 9.674 3 10.85 3c1.175 0 2.348.2 3.496.614C18.769 5.084 19.985 10.073 17.329 13.55 14.672 17.026 12 21 12 21z"></path>
+                    </svg>
+                </button>
+                <button class="bg-gray-500 text-white p-2 rounded mt-2 w-full">Add To Cart</button>
             </div>
         </div>
+    </div>
 
-        <script type="module" src="/src/main.js"></script>
-        <!-- <script>
-            document.addEventListener('alpine:init', () => {
-              Alpine.data('productList', () => ({
+    <script type="module" src="./src/main.js"></script>
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('productList', () => ({
                 products: [],
                 filteredProducts: [],
                 isModalOpen: false,
@@ -247,37 +141,40 @@
                 category: 'all',
                 search: '',
                 sortOrder: 'default',
-
-                loadProducts() {
-                  // Load products from Fake Store API or local data
+                async loadProducts() {
+                    const res = await fetch('https://fakestoreapi.com/products');
+                    this.products = await res.json();
+                    this.filteredProducts = this.products;
                 },
-
-                filterCategory(category) {
-                  // Filter products by category
-                },
-
-                sortProducts() {
-                  // Sort products based on sortOrder
-                },
-
                 showModal(product) {
-                  this.modalProduct = product;
-                  this.isModalOpen = true;
+                    this.modalProduct = product;
+                    this.isModalOpen = true;
                 },
-
                 closeModal() {
-                  this.isModalOpen = false;
+                    this.isModalOpen = false;
+                    this.modalProduct = null;
                 },
-
-                rateProduct(product, rating) {
-                  product.rating.rate = rating;
+                filterCategory(category) {
+                    this.category = category;
+                    this.filteredProducts = this.products.filter(product => category === 'all' || product.category === category);
                 },
-
+                sortProducts() {
+                    if (this.sortOrder === 'asc') {
+                        this.filteredProducts.sort((a, b) => a.price - b.price);
+                    } else if (this.sortOrder === 'desc') {
+                        this.filteredProducts.sort((a, b) => b.price - a.price);
+                    } else {
+                        this.filteredProducts = this.products;
+                    }
+                },
                 toggleFavorite(product) {
-                  product.favorite = !product.favorite;
+                    product.favorite = !product.favorite;
+                },
+                rateProduct(product, rating) {
+                    product.rating.rate = rating;
                 }
-              }));
-            });
-        </script> -->
-    </body>
+            }));
+        });
+    </script>
+</body>
 </html>
